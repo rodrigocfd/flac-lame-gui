@@ -52,13 +52,9 @@ static void _Main_convertToMp3()
 	
 	// Process the files.
 	for(i = 0 ; i < numFiles; ++i) {
-		wchar_t  file[MAX_PATH];
-		wchar_t *pErr = NULL;
+		wchar_t file[MAX_PATH];
 		ListView_getText(hList, i, 0, file, ARRAYSIZE(file));
-		if(!Converter_ToMp3(file, deleteSrc, quality, isVbr, &pErr)) {
-			msgBoxFmt(hDlg, MB_ICONERROR, L"Fail", L"Conversion to MP3 failed.\nFile: \"%s\"\n%s", file, pErr);
-			free(pErr);
-		}
+		Converter_ToMp3(file, deleteSrc, quality, isVbr);
 	}
 }
 
@@ -84,13 +80,9 @@ static void _Main_convertToFlac()
 
 	// Process the files.
 	for(i = 0; i < numFiles; ++i) {
-		wchar_t  file[MAX_PATH];
-		wchar_t *pErr = NULL;
+		wchar_t file[MAX_PATH];
 		ListView_getText(hList, i, 0, file, ARRAYSIZE(file));
-		if(!Converter_ToFlac(file, deleteSrc, quality, &pErr)) {
-			msgBoxFmt(hDlg, MB_ICONERROR, L"Fail", L"Conversion to FLAC failed.\nFile: \"%s\"\n%s", file, pErr);
-			free(pErr);
-		}
+		Converter_ToFlac(file, deleteSrc, quality);
 	}
 }
 
@@ -113,13 +105,9 @@ static void _Main_convertToWav()
 
 	// Process the files.
 	for(i = 0; i < numFiles; ++i) {
-		wchar_t  file[MAX_PATH];
-		wchar_t *pErr = NULL;
+		wchar_t file[MAX_PATH];
 		ListView_getText(hList, i, 0, file, ARRAYSIZE(file));
-		if(!Converter_ToWav(file, deleteSrc, &pErr)) {
-			msgBoxFmt(hDlg, MB_ICONERROR, L"Fail", L"Conversion to WAV failed.\nFile: \"%s\"\n%s", file, pErr);
-			free(pErr);
-		}
+		Converter_ToWav(file, deleteSrc);
 	}
 }
 
