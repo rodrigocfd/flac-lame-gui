@@ -8,6 +8,6 @@
 
 void Converter_GetLamePath(wchar_t *buf, int bufsz);
 void Converter_GetFlacPath(wchar_t *buf, int bufsz);
-BOOL Converter_ToWav      (const wchar_t *src, BOOL delSrc, wchar_t **pErr);
-BOOL Converter_ToFlac     (const wchar_t *src, BOOL delSrc, const wchar_t *quality, wchar_t **pErr);
-BOOL Converter_ToMp3      (const wchar_t *src, BOOL delSrc, const wchar_t *quality, BOOL isVbr, wchar_t **pErr);
+BOOL Converter_ToWav      (const wchar_t *src, BOOL delSrc);
+BOOL Converter_ToFlac     (const wchar_t *src, BOOL delSrc, const wchar_t *quality);
+BOOL Converter_ToMp3      (const wchar_t *src, BOOL delSrc, const wchar_t *quality, BOOL isVbr);

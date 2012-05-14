@@ -164,7 +164,7 @@ bye:
 	free(ctd); // consume
 }
 
-BOOL Converter_ToWav(const wchar_t *src, BOOL delSrc, wchar_t **pErr)
+BOOL Converter_ToWav(const wchar_t *src, BOOL delSrc)
 {
 	Converter_ThreadData *ctd = calloc(1, sizeof(Converter_ThreadData)); // will be consumed by thread
 	lstrcpy(ctd->src, src);
@@ -172,7 +172,7 @@ BOOL Converter_ToWav(const wchar_t *src, BOOL delSrc, wchar_t **pErr)
 	return Thread_RunAsync(_Converter_ToWavRun, ctd);
 }
 
-BOOL Converter_ToFlac(const wchar_t *src, BOOL delSrc, const wchar_t *quality, wchar_t **pErr)
+BOOL Converter_ToFlac(const wchar_t *src, BOOL delSrc, const wchar_t *quality)
 {
 	Converter_ThreadData *ctd = calloc(1, sizeof(Converter_ThreadData)); // will be consumed by thread
 	lstrcpy(ctd->src, src);
@@ -181,7 +181,7 @@ BOOL Converter_ToFlac(const wchar_t *src, BOOL delSrc, const wchar_t *quality, w
 	return Thread_RunAsync(_Converter_ToFlacRun, ctd);
 }
 
-BOOL Converter_ToMp3(const wchar_t *src, BOOL delSrc, const wchar_t *quality, BOOL isVbr, wchar_t **pErr)
+BOOL Converter_ToMp3(const wchar_t *src, BOOL delSrc, const wchar_t *quality, BOOL isVbr)
 {
 	Converter_ThreadData *ctd = malloc(sizeof(Converter_ThreadData)); // will be consumed by thread
 	lstrcpy(ctd->src, src);
