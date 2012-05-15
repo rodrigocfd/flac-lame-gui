@@ -4,7 +4,7 @@
 #include "common/util.h"
 
 
-typedef struct Converter_ThreadData_ {
+typedef struct {
 	wchar_t src[MAX_PATH];
 	wchar_t quality[32];
 	BOOL delSrc, isVbr;

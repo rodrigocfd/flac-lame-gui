@@ -12,7 +12,7 @@
 
 typedef struct ResizerCtrl_ ResizerCtrl;
 
-typedef struct Resizer_ {
+typedef struct {
 	HWND hParent;
 	int  lastInserted;
 	SIZE szOrig;
