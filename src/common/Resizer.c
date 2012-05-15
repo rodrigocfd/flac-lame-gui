@@ -2,6 +2,13 @@
 #include "Resizer.h"
 #include "util.h"
 
+struct ResizerCtrl_ {
+	HWND hWnd;     // handle to child window
+	RECT rcOrig;   // original coordinates relative to parent
+	BYTE modeHorz; // horizontal mode
+	BYTE modeVert; // vertical mode
+};
+
 
 Resizer Resizer_new(HWND hParent, int numChildren)
 {

@@ -10,13 +10,7 @@
 #define RESIZE 2 // control size stretches; control doesn't move
 
 
-typedef struct ResizerCtrl_ {
-	HWND hWnd;     // handle to child window
-	RECT rcOrig;   // original coordinates relative to parent
-	BYTE modeHorz; // horizontal mode
-	BYTE modeVert; // vertical mode
-} ResizerCtrl;
-
+typedef struct ResizerCtrl_ ResizerCtrl;
 
 typedef struct Resizer_ {
 	HWND hParent;
