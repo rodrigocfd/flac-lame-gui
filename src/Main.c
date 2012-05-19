@@ -27,7 +27,8 @@ static INT_PTR CALLBACK Main_dialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM l
 		case BTN_RUN:  Main_onRun(); return TRUE;
 		case MNU_ABOUT:
 			msgBoxFmt(hDlg, MB_ICONINFORMATION, L"About",
-				L"FLAC and LAME frontend v1.0.8\nRodrigo César de Freitas Dias\n\n"
+				L"FLAC and LAME frontend v1.0.8\nRodrigo César de Freitas Dias\n"
+				L"\x72\x63\x65\x73\x61\x72\x40\x67\x6D\x61\x69\x6C\x2E\x63\x6F\x6D\n\n"
 				L"Usage:\nDrag MP3, FLAC or WAV files into the window,\n"
 				L"then choose the conversion to perform.");
 			return TRUE;

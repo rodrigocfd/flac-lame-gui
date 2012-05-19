@@ -2,7 +2,7 @@ FLAC/LAME frontend
 
 I tried many GUIs to manage the command line versions of FLAC and LAME, and I disliked all them. So I wrote my own. Particularly, this one performs the conversions of many files simultaneously in parallel threads, taking advantage of multi-core CPUs.
 
-This program is pure C, and it uses nothing but Win32.
+This program is pure C, and it uses nothing but Win32. To usage instructions, press F1.
 
 LAME command line can be found at:
 http://www.rarewares.org/mp3-lame-bundle.php
