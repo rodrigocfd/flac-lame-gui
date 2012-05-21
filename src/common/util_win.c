@@ -64,6 +64,8 @@ wchar_t* exeDir(wchar_t *buf, int bufsz)
 #ifdef _DEBUG
 	*wcsrchr(buf, L'\\') = L'\0';
 	*(wcsrchr(buf, L'\\') + 1) = L'\0'; // bypass the "debug" folder
+	*wcsrchr(buf, L'\\') = L'\0';
+	*(wcsrchr(buf, L'\\') + 1) = L'\0'; // bypass the "vc2005" folder
 #endif
 
 	return buf; // return same passed string
