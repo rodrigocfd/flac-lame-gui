@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="Windows-1252"?>
-<VisualStudioProject 
+<VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="FlacLameGui"
@@ -403,6 +403,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\common\Strings.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\common\Thread.h"
 				>
 			</File>
@@ -432,6 +436,10 @@
 			</File>
 			<File
 				RelativePath="..\src\common\Resizer.c"
+				>
+			</File>
+			<File
+				RelativePath="..\src\common\Strings.c"
 				>
 			</File>
 			<File

@@ -54,90 +54,106 @@ wchar_t* trim(wchar_t *s)
 	return s; // return pointer to same passed string
 }
 
-int multistr2array(const wchar_t *multiStr, wchar_t ***pBuf)
+void explodeMultiStr(const wchar_t *multiStr, Strings *pBuf)
 {
 	// Example multiStr:
 	// L"first one\0second one\0third one\0"
 	// Will be splitted into an array of pointer to strings.
 	// Assumes a well-formed multiStr.
 
-	int numStrings = 0;
+	int i, numStrings = 0;
+	const wchar_t *pRun = NULL;
 
 	// Count number of null-delimited strings; string end with double null.
-	{
-		const wchar_t *pRun = multiStr;
-		while(*pRun) {
-			++numStrings;
-			pRun += lstrlen(pRun) + 1;
-		}
+	pRun = multiStr;
+	while(*pRun) {
+		++numStrings;
+		pRun += lstrlen(pRun) + 1;
 	}
 
 	// Alloc array of pointers to arrays (strings).
-	*pBuf = malloc(sizeof(wchar_t*) * numStrings);
+	Strings_realloc(pBuf, numStrings);
 
-	// Alloc and copy each string.
-	{
-		int i;
-		const wchar_t *pRun = multiStr;
-		for(i = 0; i < numStrings; ++i) {
-			int len = lstrlen(pRun);
-			(*pBuf)[i] = malloc(sizeof(wchar_t) * (len + 1));
-			memcpy((*pBuf)[i], pRun, sizeof(wchar_t) * (len + 1));
-			pRun += len + 1;
-		}
+	// Alloc and copy each string.	
+	pRun = multiStr;
+	for(i = 0; i < numStrings; ++i) {
+		int len = lstrlen(pRun);
+		Strings_reallocStr(pBuf, i, len);
+		wcsncpy(Strings_get(pBuf, i), pRun, len + 1);
+		pRun += len + 1;
 	}
-
-	return numStrings; // user must free the array of arrays
 }
 
-int quotedstr2array(const wchar_t *quotedStr, wchar_t ***pBuf)
+void explodeQuotedStr(const wchar_t *quotedStr, Strings *pBuf)
 {
 	// Example quotedStr:
-	// "first one" "second one" "third one"
-	// Will be splitted into an array of pointer to strings.
-	// Assumes a well-formed quotedStr.
+	// "First one" NotQuoteOne "Third one"
 
-	int numStrings = 0;
+	int i, numStrings = 0;
+	const wchar_t *pRun = NULL;
 
-	// Count number of quoted strings.
-	{
-		const wchar_t *pRun = quotedStr;
-		for(;;) {
-			while(*pRun != L'\"') {
-				if(!*pRun) goto no_more_strs;
+	// Count number of strings.
+	pRun = quotedStr;
+	while(*pRun) {
+		if(*pRun == L'\"') { // begin of quoted string
+			++pRun; // point to 1st char of string
+			for(;;) {
+				if(!*pRun) break; // won't compute open-quoted
+				else if(*pRun == L'\"') {
+					++pRun; // point to 1st char after closing quote
+					++numStrings;
+					break;
+				}
 				++pRun;
 			}
-			++pRun; // now points to 1st char
-
-			++numStrings;
-			while(*pRun != L'\"') ++pRun;
-			++pRun; // now points to past closing quote
 		}
+		else if(!iswspace(*pRun)) { // 1st char of non-quoted string
+			++pRun; // point to 2nd char of string
+			while(*pRun && !iswspace(*pRun) && *pRun != L'\"') ++pRun; // passed string
+			++numStrings;
+		}
+		else ++pRun; // some white space
 	}
-no_more_strs:
 
-	// Alloc array of pointers to arrays (strings).
-	*pBuf = malloc(sizeof(wchar_t*) * numStrings);
+	// Alloc array of strings.
+	Strings_realloc(pBuf, numStrings);
 
 	// Alloc and copy each string.
-	{
-		int i;
-		const wchar_t *pBase, *pRun = quotedStr;
-		for(i = 0; i < numStrings; ++i) {
-			int len;
+	pRun = quotedStr;
+	i = 0;
+	while(*pRun) {
+		const wchar_t *pBase = NULL;
+		int len;
 
-			while(*pRun != L'\"') ++pRun;
-			pBase = ++pRun; // now points to 1st char
-			while(*pRun != L'\"') ++pRun; // now points to closing quote
+		if(*pRun == L'\"') { // begin of quoted string
+			++pRun; // point to 1st char of string
+			pBase = pRun;
+			for(;;) {
+				if(!*pRun) break; // won't compute open-quoted
+				else if(*pRun == L'\"') {
+					len = (int)(pRun - pBase);
+					Strings_reallocStr(pBuf, i, len);
+					wcsncpy(Strings_get(pBuf, i), pBase, len); // copy to buffer
+					Strings_get(pBuf, i)[len] = L'\0'; // terminating null
+					++i; // next string
 
-			len = (int)(pRun - pBase);
-			(*pBuf)[i] = malloc(sizeof(wchar_t) * (len + 1));
-			memcpy((*pBuf)[i], pBase, sizeof(wchar_t) * len);
-			(*pBuf)[i][len] = L'\0'; // terminating null
-
-			pBase = ++pRun; // not points to past closing quote
+					++pRun; // point to 1st char after closing quote
+					break;
+				}
+				++pRun;
+			}
 		}
+		else if(!iswspace(*pRun)) { // 1st char of non-quoted string
+			pBase = pRun;
+			++pRun; // point to 2nd char of string
+			while(*pRun && !iswspace(*pRun) && *pRun != L'\"') ++pRun; // passed string
+			
+			len = (int)(pRun - pBase);
+			Strings_reallocStr(pBuf, i, len);
+			wcsncpy(Strings_get(pBuf, i), pBase, len); // copy to buffer
+			Strings_get(pBuf, i)[len] = L'\0'; // terminating null
+			++i; // next string
+		}
+		else ++pRun; // some white space
 	}
-
-	return numStrings; // user must free the array of arrays
 }
