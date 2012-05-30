@@ -39,7 +39,7 @@ static void _Converter_ToWavRun(void *pArg)
 	}
 
 	Converter_GetFlacPath(flacpath, ARRAYSIZE(flacpath)); // retrieve FLAC tool path
-	cmdLine = allocfmt(L"\"%s\" -d \"%s\"", flacpath, ctd->src); // will be consumed in thread
+	cmdLine = allocfmt(L"\"%s\" -d \"%s\"", flacpath, ctd->src);
 
 #ifdef _DEBUG
 	// Debug summary of operations about to be performed.
@@ -90,7 +90,7 @@ static void _Converter_ToFlacRun(void *pArg)
 	// Proceed with FLAC command line tool.
 	Converter_GetFlacPath(flacpath, ARRAYSIZE(flacpath));
 	cmdLine = allocfmt(L"\"%s\" -%s -V --no-seektable \"%s\"",
-		flacpath, ctd->quality, realSrc); // will be consumed in thread
+		flacpath, ctd->quality, realSrc);
 
 #ifdef _DEBUG
 	// Debug summary of operations about to be performed.
@@ -145,7 +145,7 @@ static void _Converter_ToMp3Run(void *pArg)
 	// Proceed with LAME command line tool.
 	Converter_GetLamePath(lamepath, ARRAYSIZE(lamepath));
 	cmdLine = allocfmt(L"\"%s\" -%s%s --noreplaygain \"%s\" \"%s\"",
-		lamepath, (ctd->isVbr ? L"V" : L"b"), ctd->quality, realSrc, realSrc); // will be consumed in thread
+		lamepath, (ctd->isVbr ? L"V" : L"b"), ctd->quality, realSrc, realSrc);
 	lstrcpy(wcsrchr(cmdLine, L'.'), L".mp3\""); // MP3 extension instead of WAV on destination filepath
 
 #ifdef _DEBUG
