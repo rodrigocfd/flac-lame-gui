@@ -250,6 +250,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\common\Strings.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\common\Thread.h"
 				>
 			</File>
@@ -279,6 +283,10 @@
 			</File>
 			<File
 				RelativePath="..\src\common\Resizer.c"
+				>
+			</File>
+			<File
+				RelativePath="..\src\common\Strings.c"
 				>
 			</File>
 			<File
